@@ -73,6 +73,8 @@ bool AVLTree::removeNode(AVLNode*& current){
     return true;
 }
 
+bool AVLTree::insert(const std::string& key, size_t value)
+
 bool AVLTree::remove(AVLNode *&current, KeyType key) {
     return false;
 }

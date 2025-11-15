@@ -6,7 +6,9 @@ Avl tree
 
 #ifndef AVLTREE_H
 #define AVLTREE_H
+#include <optional>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -43,6 +45,9 @@ public:
     private:
     AVLNode* root;
 
+
+    bool insert(const std::string& key, size_t value);
+
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
     bool remove(AVLNode*& current, KeyType key);
@@ -51,6 +56,25 @@ public:
     // You will implement this, but it is needed for removeNode()
     void balanceNode(AVLNode*& node);
 
+    bool contains(const std::string& key) const;
+
+    optional<size_t> get(const std::string& key) const;
+
+    size_t& operator[](const std::string& key);
+
+    vector<std::string> keys() const;
+
+    size_t size() const;
+
+    size_t getHeight() const;
+
+    AVLTree(const AVLTree& other);
+
+    void operator=(const AVLTree& other);
+
+    ~AVLTree();
+
+    friend std::ostream& operator<<(ostream& os, const AVLTree & avlTree);
 };
 
 #endif //AVLTREE_H
