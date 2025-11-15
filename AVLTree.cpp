@@ -26,7 +26,7 @@ bool AVLTree::AVLNode::isLeaf() const {
 }
 
 size_t AVLTree::AVLNode::getHeight() const {
-    return height;
+
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -73,9 +73,14 @@ bool AVLTree::removeNode(AVLNode*& current){
     return true;
 }
 
-bool AVLTree::insert(const std::string& key, size_t value, AVLNode *&current) {
+bool AVLTree::insert(const std::string& key, size_t value) {
+    insertHelper(root, key, value)
+}
+
+bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t value) {
     if (!root) {
         root = new AVLNode(key, value);
+        root->height = 0;
         return true;
     }
 
@@ -83,9 +88,9 @@ bool AVLTree::insert(const std::string& key, size_t value, AVLNode *&current) {
         current = new AVLNode(key, value);
         return true;
     } else if (key<current->key) {
-        return insert(key, value,current->left);
+        return insertHelper(current->left, key, value);
     } else if (key>current->key){
-        return insert(key, value,current->right);
+        return insertHelper(current->right, key, value);
     } else {
         return false;
     }
