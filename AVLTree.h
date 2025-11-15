@@ -46,7 +46,7 @@ public:
     AVLNode* root;
 
 
-    bool insert(const std::string& key, size_t value);
+    bool insert(const std::string& key, size_t value, AVLNode *&current);
 
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
