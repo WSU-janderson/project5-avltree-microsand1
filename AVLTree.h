@@ -1,9 +1,7 @@
 /*
 micah sanders-johnson
-october 11/15
-HashTable
-Make a HashTable using random probe
-then write about the time complexity
+november 15 2025
+Avl tree
 */
 
 #ifndef AVLTREE_H

@@ -1,6 +1,6 @@
 /*
 micah sanders-johnson
-october 25 2025
+november 15 2025
 HashTable
 Make a HashTable using random probe
 then write about the time complexity
@@ -22,14 +22,11 @@ size_t AVLTree::AVLNode::numChildren() const {
 }
 
 bool AVLTree::AVLNode::isLeaf() const {
-    if (right&&left) {
-       return false;
-    }
-    return true;
+    return numChildren() == 0;
 }
 
 size_t AVLTree::AVLNode::getHeight() const {
-    return 0;
+    return height;
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
