@@ -1,13 +1,31 @@
+/*
+micah sanders-johnson
+october 25 2025
+HashTable
+Make a HashTable using random probe
+then write about the time complexity
+*/
+
 #include "AVLTree.h"
 
 #include <string>
 
 size_t AVLTree::AVLNode::numChildren() const {
-    return 0;
+    size_t children = 0;
+    if (right) {
+        children++;
+    }
+    if (left) {
+        children++;
+    }
+    return children;
 }
 
 bool AVLTree::AVLNode::isLeaf() const {
-    return false;
+    if (right&&left) {
+       return false;
+    }
+    return true;
 }
 
 size_t AVLTree::AVLNode::getHeight() const {

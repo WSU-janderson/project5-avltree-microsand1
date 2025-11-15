@@ -1,7 +1,10 @@
-/**
- * AVLTree.h
- * check 123
- */
+/*
+micah sanders-johnson
+october 11/15
+HashTable
+Make a HashTable using random probe
+then write about the time complexity
+*/
 
 #ifndef AVLTREE_H
 #define AVLTREE_H
