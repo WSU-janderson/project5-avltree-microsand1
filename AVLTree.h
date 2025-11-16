@@ -107,6 +107,8 @@ public:
 
     //done
     AVLNode* dupeHelper(AVLNode* node);
+
+    bool containsHelper(AVLNode* node, const std::string& key) const;
 };
 
 #endif //AVLTREE_H
