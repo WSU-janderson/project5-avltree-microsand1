@@ -26,7 +26,9 @@ bool AVLTree::AVLNode::isLeaf() const {
 }
 
 size_t AVLTree::AVLNode::getHeight() const {
-
+    if (left&&right) {
+        return getheight
+    }
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -74,7 +76,7 @@ bool AVLTree::removeNode(AVLNode*& current){
 }
 
 bool AVLTree::insert(const std::string& key, size_t value) {
-    insertHelper(root, key, value)
+    insertHelper(root, key, value);
 }
 
 bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t value) {
