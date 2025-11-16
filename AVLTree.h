@@ -34,12 +34,12 @@ protected:
         // number of hops to deepest leaf node
         size_t getHeight() const;
 
-        size_t getHeightHelper(AVLNode* current) const;
 
 
     };
 
 public:
+
     bool contains(const std::string& key) const;
 
     optional<size_t> get(const std::string& key) const;
@@ -48,32 +48,45 @@ public:
 
     vector<std::string> keys() const;
 
+    //done
     size_t size() const;
 
+    //done
     size_t getHeight() const;
+
 
     AVLTree(const AVLTree& other);
 
     void operator=(const AVLTree& other);
 
+    //done
     ~AVLTree();
 
+    //done
     void destroyTree(AVLNode *node);
 
-    static void printInOrder(std::ostream& os, AVLNode * current);
-
+    //done
     friend std::ostream& operator<<(ostream& os, const AVLTree & avlTree);
 
+    //done
     AVLTree();
 
+    //done
     bool insert(const std::string& key, size_t value);
+
+    bool remove(KeyType key);
 
     private:
     AVLNode* root;
 
-    bool insertHelper(AVLNode *&current,  const std::string& key, size_t value);
+    //done
+    bool insertHelper(AVLNode *& current,  const std::string& key, size_t value);
 
+    //done
+    static void printInOrder(std::ostream& os, AVLNode * current);
 
+    //done
+    size_t sizeHelper(AVLNode *node) const;
 
     /* Helper methods for remove */
     // this overloaded remove will do the recursion to remove the node
@@ -83,7 +96,11 @@ public:
     // You will implement this, but it is needed for removeNode()
     void balanceNode(AVLNode*& node);
 
+    //done
+    void updateHeight(AVLNode *node);
 
+    //done
+    size_t getNodeHeight(AVLNode *node) const;
 };
 
 #endif //AVLTREE_H
