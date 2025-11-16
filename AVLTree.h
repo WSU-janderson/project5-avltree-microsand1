@@ -40,25 +40,6 @@ protected:
     };
 
 public:
-
-
-
-
-    private:
-    AVLNode* root;
-
-    bool insertHelper(AVLNode *&current,  const std::string& key, size_t value);
-
-    bool insert(const std::string& key, size_t value);
-
-    /* Helper methods for remove */
-    // this overloaded remove will do the recursion to remove the node
-    bool remove(AVLNode*& current, KeyType key);
-    // removeNode contains the logic for actually removing a node based on the numebr of children
-    bool removeNode(AVLNode*& current);
-    // You will implement this, but it is needed for removeNode()
-    void balanceNode(AVLNode*& node);
-
     bool contains(const std::string& key) const;
 
     optional<size_t> get(const std::string& key) const;
@@ -77,7 +58,32 @@ public:
 
     ~AVLTree();
 
+    void printInOrder(std::ostream& os, AVLNode *& current);
+
+    static void printInOrder(const ostream & os, AVLNode * root);
+
     friend std::ostream& operator<<(ostream& os, const AVLTree & avlTree);
+
+    AVLTree();
+
+    bool insert(const std::string& key, size_t value);
+
+    private:
+    AVLNode* root;
+
+    bool insertHelper(AVLNode *&current,  const std::string& key, size_t value);
+
+
+
+    /* Helper methods for remove */
+    // this overloaded remove will do the recursion to remove the node
+    bool remove(AVLNode*& current, KeyType key);
+    // removeNode contains the logic for actually removing a node based on the numebr of children
+    bool removeNode(AVLNode*& current);
+    // You will implement this, but it is needed for removeNode()
+    void balanceNode(AVLNode*& node);
+
+
 };
 
 #endif //AVLTREE_H

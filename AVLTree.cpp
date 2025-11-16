@@ -7,8 +7,9 @@ then write about the time complexity
 */
 
 #include "AVLTree.h"
-
+#include <algorithm>
 #include <string>
+#include <iostream>
 
 size_t AVLTree::AVLNode::numChildren() const {
     size_t children = 0;
@@ -47,6 +48,10 @@ size_t AVLTree::AVLNode::getHeightHelper(AVLNode* current) const {
         rightHeight = getHeightHelper(current->left);
     }
     return std::max(leftHeight, rightHeight)+1;
+}
+
+AVLTree::AVLTree() : root(nullptr) {
+
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -94,7 +99,7 @@ bool AVLTree::removeNode(AVLNode*& current){
 }
 
 bool AVLTree::insert(const std::string& key, size_t value) {
-    insertHelper(root, key, value);
+    return insertHelper(root, key, value);
 }
 
 bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t value) {
@@ -122,4 +127,18 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 }
 
 void AVLTree::balanceNode(AVLNode *&node) {
+}
+
+void AVLTree::printInOrder(std::ostream& os, AVLNode *& current) {
+    if (!current) return;
+    printInOrder(os, current->left);
+    os << current->key << ": " << current->value << " ";
+    printInOrder(os, current->right);
+}
+
+std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree) {
+    os << "{ ";
+    AVLTree::printInOrder(os, avlTree.root);
+    os << "}";
+    return os;
 }
