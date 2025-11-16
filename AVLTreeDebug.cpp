@@ -24,11 +24,14 @@ int main() {
     insertResult = tree.insert("C", 'C');
     insertResult = tree.insert("A", 'A'); // single rotate right
     cout << endl << endl;
+    AVLTree tree2 = tree;
     cout << tree << endl;
+    cout << "tree2: "<<tree2 << endl;
     //
     insertResult = tree.insert("D", 'D'); // double rotate right
     cout << endl << endl;
     cout << tree << endl;
+    cout << tree2 << endl;
     //
     insertResult = tree.insert("R", 'R'); // double rotate left
     cout << endl << endl;

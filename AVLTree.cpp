@@ -33,6 +33,27 @@ size_t AVLTree::AVLNode::getHeight() const {
 AVLTree::AVLTree() : root(nullptr) {
 
 }
+
+AVLTree::AVLTree(const AVLTree& other) {
+    root = dupeHelper(other.root);
+}
+
+AVLTree::AVLNode* AVLTree::dupeHelper(AVLNode* node) {
+    if (!node) {
+        return nullptr;
+    }
+
+    AVLNode* newNode = new AVLNode(node->key, node->value);
+
+    newNode->height = node->height;
+
+    newNode->left = dupeHelper(node->left);
+    newNode->right = dupeHelper(node->right);
+
+    return newNode;
+
+}
+
 AVLTree::~AVLTree() {
     destroyTree(root);
     root = nullptr;

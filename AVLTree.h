@@ -27,6 +27,8 @@ protected:
         AVLNode* left;
         AVLNode* right;
 
+        AVLNode(const KeyType& key, const ValueType& value) : key(key), value(value), height(0), left(nullptr), right(nullptr){}
+
         // 0, 1 or 2
         size_t numChildren() const;
         // true or false
@@ -101,6 +103,8 @@ public:
 
     //done
     size_t getNodeHeight(AVLNode *node) const;
+
+    AVLNode* dupeHelper(AVLNode* node);
 };
 
 #endif //AVLTREE_H
