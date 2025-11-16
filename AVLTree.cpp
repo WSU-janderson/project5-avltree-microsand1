@@ -141,7 +141,7 @@ bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t va
 
 }
 
-bool AVLTree::remove(KeyType key) {
+bool AVLTree::remove(const KeyType &key) {
     if (!root) {
         return false;
     }

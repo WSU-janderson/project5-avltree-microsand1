@@ -56,7 +56,7 @@ public:
     //done
     size_t getHeight() const;
 
-
+    //done
     AVLTree(const AVLTree& other);
 
     void operator=(const AVLTree& other);
@@ -76,7 +76,8 @@ public:
     //done
     bool insert(const std::string& key, size_t value);
 
-    bool remove(KeyType key);
+    //done
+    bool remove(const KeyType &key);
 
     private:
     AVLNode* root;
@@ -104,6 +105,7 @@ public:
     //done
     size_t getNodeHeight(AVLNode *node) const;
 
+    //done
     AVLNode* dupeHelper(AVLNode* node);
 };
 
