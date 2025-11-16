@@ -34,6 +34,8 @@ protected:
         // number of hops to deepest leaf node
         size_t getHeight() const;
 
+        size_t getHeightHelper(AVLNode* current) const;
+
 
     };
 

@@ -26,9 +26,27 @@ bool AVLTree::AVLNode::isLeaf() const {
 }
 
 size_t AVLTree::AVLNode::getHeight() const {
-    if (left&&right) {
-        return getheight
+    size_t leftHeight = -1;
+    size_t rightHeight = -1;
+    if (left) {
+        leftHeight = getHeightHelper(left);
     }
+    if (right) {
+        rightHeight = getHeightHelper(left);
+    }
+    return std::max(leftHeight, rightHeight)+1;
+}
+
+size_t AVLTree::AVLNode::getHeightHelper(AVLNode* current) const {
+    size_t leftHeight = -1;
+    size_t rightHeight = -1;
+    if (current->left) {
+        leftHeight = getHeightHelper(current->left);
+    }
+    if (current->right) {
+        rightHeight = getHeightHelper(current->left);
+    }
+    return std::max(leftHeight, rightHeight)+1;
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
