@@ -21,36 +21,36 @@ int main() {
     cout << endl << endl;
     cout << tree << endl;
     //
-    // insertResult = tree.insert("C", 'C');
-    // insertResult = tree.insert("A", 'A'); // single rotate right
-    // cout << endl << endl;
-    // cout << tree << endl;
+    insertResult = tree.insert("C", 'C');
+    insertResult = tree.insert("A", 'A'); // single rotate right
+    cout << endl << endl;
+    cout << tree << endl;
     //
-    // insertResult = tree.insert("D", 'D'); // double rotate right
-    // cout << endl << endl;
-    // cout << tree << endl;
+    insertResult = tree.insert("D", 'D'); // double rotate right
+    cout << endl << endl;
+    cout << tree << endl;
     //
-    // insertResult = tree.insert("R", 'R'); // double rotate left
-    // cout << endl << endl;
-    // cout << tree << endl;
+    insertResult = tree.insert("R", 'R'); // double rotate left
+    cout << endl << endl;
+    cout << tree << endl;
     //
-    // insertResult = tree.insert("V", 'V');
-    // insertResult = tree.insert("A", 'A'); // false, duplicate
-    // insertResult = tree.insert("Z", 'Z');
-    // insertResult = tree.insert("M", 'M');
-    // insertResult = tree.insert("D", 'D'); // false, duplicate
-    // cout << endl << endl;
-    // cout << tree << endl;
+    insertResult = tree.insert("V", 'V');
+    insertResult = tree.insert("A", 'A'); // false, duplicate
+    insertResult = tree.insert("Z", 'Z');
+    insertResult = tree.insert("M", 'M');
+    insertResult = tree.insert("D", 'D'); // false, duplicate
+    cout << endl << endl;
+    cout << tree << endl;
     //
     // // size and getHeight
-    // cout << "tree size: " << tree.size() << endl; // 10
-    // cout << "tree height: " << tree.getHeight() << endl; // 3
-    // cout << endl;
+    cout << "tree size: " << tree.size() << endl; // 10
+    cout << "tree height: " << tree.getHeight() << endl; // 3
+    cout << endl;
 //
 //    // contains
-    bool containsResult;
-    containsResult = tree.contains("A"); // true
-    containsResult = tree.contains("N"); // false
+    //bool containsResult;
+    //containsResult = tree.contains("A"); // true
+    //containsResult = tree.contains("N"); // false
 //
 //    // get
 //    optional<int> getResult;
@@ -98,5 +98,5 @@ int main() {
 //    cout << endl << endl;
 //    cout << tree << endl;
 
-    return 0;
+//    return 0;
 }

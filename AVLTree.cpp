@@ -53,6 +53,19 @@ size_t AVLTree::AVLNode::getHeightHelper(AVLNode* current) const {
 AVLTree::AVLTree() : root(nullptr) {
 
 }
+AVLTree::~AVLTree() {
+    destroyTree(root);
+    root = nullptr;
+}
+
+void AVLTree::destroyTree(AVLNode* node) {
+    if (!node) return;
+
+    destroyTree(node->left);
+    destroyTree(node->right);
+
+    delete node;
+}
 
 bool AVLTree::removeNode(AVLNode*& current){
     if (!current) {
@@ -129,7 +142,7 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
 void AVLTree::balanceNode(AVLNode *&node) {
 }
 
-void AVLTree::printInOrder(std::ostream& os, AVLNode *& current) {
+void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
     if (!current) return;
     printInOrder(os, current->left);
     os << current->key << ": " << current->value << " ";

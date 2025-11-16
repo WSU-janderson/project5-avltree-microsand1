@@ -58,9 +58,9 @@ public:
 
     ~AVLTree();
 
-    void printInOrder(std::ostream& os, AVLNode *& current);
+    void destroyTree(AVLNode *node);
 
-    static void printInOrder(const ostream & os, AVLNode * root);
+    static void printInOrder(std::ostream& os, AVLNode * current);
 
     friend std::ostream& operator<<(ostream& os, const AVLTree & avlTree);
 
