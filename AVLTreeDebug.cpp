@@ -26,12 +26,12 @@ int main() {
     cout << endl << endl;
     AVLTree tree2 = tree;
     cout << tree << endl;
-    cout << "tree2: "<<tree2 << endl;
+    cout << "tree2: "<< tree2 << endl;
     //
     insertResult = tree.insert("D", 'D'); // double rotate right
     cout << endl << endl;
     cout << tree << endl;
-    cout << tree2 << endl;
+    cout << "tree2: "<< tree2 << endl;
     //
     insertResult = tree.insert("R", 'R'); // double rotate left
     cout << endl << endl;
@@ -51,9 +51,11 @@ int main() {
     cout << endl;
 //
 //    // contains
-    //bool containsResult;
-    //containsResult = tree.contains("A"); // true
-    //containsResult = tree.contains("N"); // false
+    bool containsResult;
+    containsResult = tree.contains("A"); // true
+    cout << containsResult << endl;
+    containsResult = tree.contains("N"); // false
+    cout << containsResult << endl;
 //
 //    // get
 //    optional<int> getResult;
