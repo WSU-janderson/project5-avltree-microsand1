@@ -222,6 +222,24 @@ bool AVLTree::containsHelper(AVLNode* node, const std::string& key) const {
     }
 }
 
+optional<size_t> AVLTree::get(const std::string& key) const {
+    return containsHelper(root, key);
+}
+
+bool AVLTree::getHelper(AVLNode* node, const std::string& key) const {
+    if (!node) {
+        return false;
+    }
+
+    if (key==node->key) {
+        return true;
+    } else if (key < node->key) {
+        return containsHelper(node->left, key);
+    } else {
+        return containsHelper(node->right, key);
+    }
+}
+
 void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
     if (!current) return;
     printInOrder(os, current->left);
