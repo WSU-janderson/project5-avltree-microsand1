@@ -41,13 +41,16 @@ protected:
     };
 
 public:
-
+    //done
     bool contains(const std::string& key) const;
 
+    //done
     optional<size_t> get(const std::string& key) const;
 
+    //done
     size_t& operator[](const std::string& key);
 
+    //done
     vector<std::string> keys() const;
 
     //done
@@ -108,10 +111,17 @@ public:
     //done
     AVLNode* dupeHelper(AVLNode* node);
 
+    //done
     bool containsHelper(AVLNode* node, const std::string& key) const;
 
+    //done
     optional<size_t> getHelper(AVLNode* node, const std::string& key) const;
 
+    //done
+    size_t& operatorHelper(AVLNode*& node, const std::string& key);
+
+    //done
+    void keysHelper(AVLNode* node, std::vector<std::string>& out) const;
 };
 
 #endif //AVLTREE_H

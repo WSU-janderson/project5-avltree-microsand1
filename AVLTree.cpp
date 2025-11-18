@@ -240,6 +240,41 @@ optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const
     }
 }
 
+size_t& AVLTree::operator[](const std::string& key) {
+    return operatorHelper(root, key);
+}
+
+size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
+    if (!node) {
+        node = new AVLNode(key, 0);
+        return node->value;
+    }
+
+    if (key == node->key) {
+        return node->value;
+    } else if (key < node->key) {
+        return operatorHelper(node->left, key);
+    } else {
+        return operatorHelper(node->right, key);
+    }
+}
+
+vector<std::string> AVLTree::keys() const {
+    std::vector<std::string> result;
+    keysHelper(root, result);
+    return result;
+}
+
+void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
+    if (!node) return;
+    keysHelper(node->left, out);
+    out.push_back(node->key);
+    keysHelper(node->right, out);
+}
+
+
+
+
 void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
     if (!current) return;
     printInOrder(os, current->left);

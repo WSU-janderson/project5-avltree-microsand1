@@ -71,6 +71,7 @@ int main() {
     getResult = tree.get("Q"); // getResult has no value
     cout << "Q: " << getResult.has_value() << endl; // print 0
     cout << endl;
+    cout << tree.keys;
 //
 //    // findRange
 //    vector<int> rangeTest = tree.findRange("D", "W");
@@ -81,9 +82,9 @@ int main() {
 //    cout << endl << endl;
 //
 //    // operator[]
-//    tree["A"] = 108;
-//    cout << tree << endl;
-//    cout << endl;
+    tree["A"] = 108;
+    cout << tree << endl;
+    cout << endl;
 //
 //    // remove
     bool removeResult;
