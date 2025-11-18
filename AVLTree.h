@@ -110,7 +110,7 @@ public:
     void updateHeight(AVLNode *node);
 
     //done
-    size_t getNodeHeight(AVLNode *node) const;
+    int getNodeHeight(AVLNode *node) const;
 
     //done
     AVLNode* dupeHelper(AVLNode* node);
@@ -129,6 +129,10 @@ public:
 
     //done
     void findRangeHelper(AVLNode* node, const std::string& lowKey,const std::string& highKey, std::vector<size_t> &out) const;
+
+    void rotateLeft(AVLNode *&node);
+
+    void rotateRight(AVLNode *&node);
 
 };
 

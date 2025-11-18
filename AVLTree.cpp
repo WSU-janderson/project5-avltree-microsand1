@@ -137,6 +137,7 @@ bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t va
 
     if (inserted) {
         updateHeight(current);
+        balanceNode(current);
     }
 
     return inserted;
@@ -155,17 +156,24 @@ size_t AVLTree::sizeHelper(AVLNode* node) const {
 }
 
 bool AVLTree::remove(AVLNode *&current, KeyType key) {
-    if (!current) {
-        return false;
-    }
+    if (!current) return false;
+
+    bool removed = false;
 
     if (key<current->key) {
-        return remove(current->left, key);
+        removed = remove(current->left, key);
     } else if (key>current->key){
-        return remove(current->right, key);
+        removed = remove(current->right, key);
     } else {
-        return removeNode(current);
+        removed = removeNode(current);
     }
+
+    if (removed&&current) {
+        updateHeight(current);
+        balanceNode(current);
+    }
+
+    return removed;
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -213,19 +221,62 @@ bool AVLTree::removeNode(AVLNode*& current){
 }
 
 void AVLTree::balanceNode(AVLNode *&node) {
+    if (!node) return;
+
+    int balance = (int)getNodeHeight(node->left) - (int)getNodeHeight(node->right);
+
+    //balance cases left
+    if (balance > 1) {
+        if (getNodeHeight(node->left->right) >= getNodeHeight(node->left->left)) {
+            rotateLeft(node->left);
+        }
+        rotateRight(node);
+    }
+
+    //balance cases right
+    if (balance < -1) {
+        if (getNodeHeight(node->right->left) >= getNodeHeight(node->right->right)) {
+            rotateRight(node->right);
+        }
+        rotateLeft(node);
+    }
+
+    updateHeight(node);
+}
+
+void AVLTree::rotateLeft(AVLNode *&node) {
+    AVLNode* rightChild = node->right;
+    node->right = rightChild->left;
+    rightChild->left = node;
+
+    updateHeight(node);
+    updateHeight(rightChild);
+
+    node = rightChild;
+}
+
+
+void AVLTree::rotateRight(AVLNode *&node) {
+    AVLNode* leftChild = node->left;
+    node->left = leftChild->right;
+    leftChild->right = node;
+
+    updateHeight(node);
+    updateHeight(leftChild);
+
+    node = leftChild;
 }
 
 void AVLTree::updateHeight(AVLNode* node) {
     node->height = 1 + std::max(getNodeHeight(node->left),getNodeHeight(node->right));
 }
 
-size_t AVLTree::getNodeHeight(AVLNode* node) const {
-    if (node) {
-        return node->height;
+int AVLTree::getNodeHeight(AVLNode* node) const {
+    if (node == nullptr) {
+        return -1;
     } else {
-        return 0;
+        return static_cast<int>(node->height);
     }
-
 }
 
 AVLTree::AVLNode* AVLTree::dupeHelper(AVLNode* node) {
@@ -310,3 +361,4 @@ void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
     out.push_back(node->key);
     keysHelper(node->right, out);
 }
+
