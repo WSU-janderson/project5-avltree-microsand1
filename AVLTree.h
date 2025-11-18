@@ -59,6 +59,8 @@ public:
     //done
     size_t size() const;
 
+    bool isBalanced() const;
+
     //done
     size_t getHeight() const;
 
