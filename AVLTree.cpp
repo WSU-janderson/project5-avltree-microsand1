@@ -226,7 +226,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
 
     //balance cases left
     if (balance > 1) {
-        if (getNodeHeight(node->left->right) > getNodeHeight(node->left->left)) {
+        if (getNodeHeight(node->left->right) >= getNodeHeight(node->left->left)) {
             rotateLeft(node->left);
         }
         rotateRight(node);
@@ -234,7 +234,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
 
     //balance cases right
     if (balance < -1) {
-        if (getNodeHeight(node->right->left) > getNodeHeight(node->right->right)) {
+        if (getNodeHeight(node->right->left) >= getNodeHeight(node->right->right)) {
             rotateRight(node->right);
         }
         rotateLeft(node);
@@ -349,12 +349,16 @@ size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
     if (key == node->key) {
         return node->value;
     } else if (key < node->key) {
-        return operatorHelper(node->left, key);
+        size_t& val = operatorHelper(node->left, key);
+        updateHeight(node);
+        balanceNode(node);
+        return val;
     } else {
-        return operatorHelper(node->right, key);
+        size_t& val = operatorHelper(node->right, key);
+        updateHeight(node);
+        balanceNode(node);
+        return val;
     }
-
-
 }
 
 void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
