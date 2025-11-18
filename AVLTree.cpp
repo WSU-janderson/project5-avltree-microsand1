@@ -30,28 +30,45 @@ size_t AVLTree::AVLNode::getHeight() const {
     return height;
 }
 
-AVLTree::AVLTree() : root(nullptr) {
+bool AVLTree::contains(const std::string& key) const {
+    return containsHelper(root, key);
+}
 
+optional<size_t> AVLTree::get(const std::string& key) const {
+    return getHelper(root, key);
+}
+
+size_t& AVLTree::operator[](const std::string& key) {
+    return operatorHelper(root, key);
+}
+
+vector<std::string> AVLTree::keys() const {
+    std::vector<std::string> result;
+    keysHelper(root, result);
+    return result;
+}
+
+size_t AVLTree::size() const {
+    return sizeHelper(root);
+}
+
+size_t AVLTree::getHeight() const {
+    if (!root) {
+        return 0;
+    }
+    return root->getHeight();
 }
 
 AVLTree::AVLTree(const AVLTree& other) {
     root = dupeHelper(other.root);
 }
 
-AVLTree::AVLNode* AVLTree::dupeHelper(AVLNode* node) {
-    if (!node) {
-        return nullptr;
+void AVLTree::operator=(const AVLTree& other) {
+    if (this == &other) {
+        return;
     }
-
-    AVLNode* newNode = new AVLNode(node->key, node->value);
-
-    newNode->height = node->height;
-
-    newNode->left = dupeHelper(node->left);
-    newNode->right = dupeHelper(node->right);
-
-    return newNode;
-
+    destroyTree(root);
+    root = dupeHelper(other.root);
 }
 
 AVLTree::~AVLTree() {
@@ -66,6 +83,89 @@ void AVLTree::destroyTree(AVLNode* node) {
     destroyTree(node->right);
 
     delete node;
+}
+
+std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree) {
+    os << "{ ";
+    AVLTree::printInOrder(os, avlTree.root);
+    os << "}";
+    return os;
+}
+
+AVLTree::AVLTree() : root(nullptr) {
+
+}
+bool AVLTree::insert(const std::string& key, size_t value) {
+    if (!root) {
+        root = new AVLNode(key, value);
+        root->height = 0;
+        return true;
+    }
+
+    return insertHelper(root, key, value);
+}
+
+bool AVLTree::remove(const KeyType &key) {
+    if (!root) {
+        return false;
+    }
+
+    if (key<root->key) {
+        return remove(root->left, key);
+    } else if (key>root->key){
+        return remove(root->right, key);
+    } else {
+        return removeNode(root);
+    }
+}
+
+bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t value) {
+    if (!current) {
+        current = new AVLNode(key, value);
+        return true;
+    }
+
+    bool inserted = false;
+
+    if (key<current->key) {
+        inserted = insertHelper(current->left, key, value);
+    } else if (key>current->key){
+        inserted = insertHelper(current->right, key, value);
+    } else {
+        return false;
+    }
+
+    if (inserted) {
+        updateHeight(current);
+    }
+
+    return inserted;
+}
+
+void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
+    if (!current) return;
+    printInOrder(os, current->left);
+    os << current->key << ": " << current->value << " ";
+    printInOrder(os, current->right);
+}
+
+size_t AVLTree::sizeHelper(AVLNode* node) const {
+    if (!node) return 0;
+    return 1 + sizeHelper(node->left) + sizeHelper(node->right);
+}
+
+bool AVLTree::remove(AVLNode *&current, KeyType key) {
+    if (!current) {
+        return false;
+    }
+
+    if (key<current->key) {
+        return remove(current->left, key);
+    } else if (key>current->key){
+        return remove(current->right, key);
+    } else {
+        return removeNode(current);
+    }
 }
 
 bool AVLTree::removeNode(AVLNode*& current){
@@ -112,73 +212,13 @@ bool AVLTree::removeNode(AVLNode*& current){
     return true;
 }
 
-bool AVLTree::insert(const std::string& key, size_t value) {
-    if (!root) {
-        root = new AVLNode(key, value);
-        root->height = 0;
-        return true;
-    }
-
-    return insertHelper(root, key, value);
-}
-
-bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t value) {
-    if (!current) {
-        current = new AVLNode(key, value);
-        return true;
-    }
-
-    bool inserted = false;
-
-    if (key<current->key) {
-        inserted = insertHelper(current->left, key, value);
-    } else if (key>current->key){
-        inserted = insertHelper(current->right, key, value);
-    } else {
-        return false;
-    }
-
-    if (inserted) {
-        updateHeight(current);
-    }
-
-    return inserted;
-}
-
-bool AVLTree::remove(const KeyType &key) {
-    if (!root) {
-        return false;
-    }
-
-    if (key<root->key) {
-        return remove(root->left, key);
-    } else if (key>root->key){
-        return remove(root->right, key);
-    } else {
-        return removeNode(root);
-    }
-}
-
-bool AVLTree::remove(AVLNode *&current, KeyType key) {
-    if (!current) {
-        return false;
-    }
-
-    if (key<current->key) {
-        return remove(current->left, key);
-    } else if (key>current->key){
-        return remove(current->right, key);
-    } else {
-       return removeNode(current);
-    }
-}
-
 void AVLTree::balanceNode(AVLNode *&node) {
 }
 
 void AVLTree::updateHeight(AVLNode* node) {
     node->height = 1 + std::max(getNodeHeight(node->left),getNodeHeight(node->right));
 }
+
 size_t AVLTree::getNodeHeight(AVLNode* node) const {
     if (node) {
         return node->height;
@@ -188,24 +228,20 @@ size_t AVLTree::getNodeHeight(AVLNode* node) const {
 
 }
 
-size_t AVLTree::getHeight() const {
-    if (!root) {
-        return 0;
+AVLTree::AVLNode* AVLTree::dupeHelper(AVLNode* node) {
+    if (!node) {
+        return nullptr;
     }
-    return root->getHeight();
-}
 
-size_t AVLTree::sizeHelper(AVLNode* node) const {
-    if (!node) return 0;
-    return 1 + sizeHelper(node->left) + sizeHelper(node->right);
-}
+    AVLNode* newNode = new AVLNode(node->key, node->value);
 
-size_t AVLTree::size() const {
-    return sizeHelper(root);
-}
+    newNode->height = node->height;
 
-bool AVLTree::contains(const std::string& key) const {
-    return containsHelper(root, key);
+    newNode->left = dupeHelper(node->left);
+    newNode->right = dupeHelper(node->right);
+
+    return newNode;
+
 }
 
 bool AVLTree::containsHelper(AVLNode* node, const std::string& key) const {
@@ -222,10 +258,6 @@ bool AVLTree::containsHelper(AVLNode* node, const std::string& key) const {
     }
 }
 
-optional<size_t> AVLTree::get(const std::string& key) const {
-    return getHelper(root, key);
-}
-
 optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const {
     if (!node) {
         return nullopt;
@@ -240,9 +272,22 @@ optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const
     }
 }
 
-size_t& AVLTree::operator[](const std::string& key) {
-    return operatorHelper(root, key);
+vector<std::string> AVLTree::findRange(const std::string &lowKey, const std::string &highKey) const {
+    std::vector<std::string> result;
+    findRangeHelper(root, lowKey, highKey,result);
+    return result;
 }
+
+void AVLTree::findRangeHelper(AVLNode* node, const std::string &lowKey, const std::string &highKey, std::vector<std::string> &out) const {
+    if (!node) return;
+    findRangeHelper(node->left, lowKey, highKey, out);
+    if (node->key<=lowKey && node->key>=highKey) {
+        out.push_back(node->key);
+    }
+    findRangeHelper(node->right, lowKey, highKey, out);
+}
+
+
 
 size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
     if (!node) {
@@ -259,38 +304,9 @@ size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
     }
 }
 
-vector<std::string> AVLTree::keys() const {
-    std::vector<std::string> result;
-    keysHelper(root, result);
-    return result;
-}
-
 void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
     if (!node) return;
     keysHelper(node->left, out);
     out.push_back(node->key);
     keysHelper(node->right, out);
-}
-
-void AVLTree::operator=(const AVLTree& other) {
-    if (this == &other) {
-        return;
-    }
-    destroyTree(root);
-    root = dupeHelper(other.root);
-}
-
-
-void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
-    if (!current) return;
-    printInOrder(os, current->left);
-    os << current->key << ": " << current->value << " ";
-    printInOrder(os, current->right);
-}
-
-std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree) {
-    os << "{ ";
-    AVLTree::printInOrder(os, avlTree.root);
-    os << "}";
-    return os;
 }
