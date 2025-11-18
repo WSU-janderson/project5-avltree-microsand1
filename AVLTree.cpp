@@ -272,7 +272,13 @@ void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
     keysHelper(node->right, out);
 }
 
-
+void AVLTree::operator=(const AVLTree& other) {
+    if (this == &other) {
+        return;
+    }
+    destroyTree(root);
+    root = dupeHelper(other.root);
+}
 
 
 void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {

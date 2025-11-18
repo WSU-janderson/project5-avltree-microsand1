@@ -42,8 +42,10 @@ int main() {
     insertResult = tree.insert("Z", 'Z');
     insertResult = tree.insert("M", 'M');
     insertResult = tree.insert("D", 'D'); // false, duplicate
+    tree2 = tree;
     cout << endl << endl;
     cout << tree << endl;
+    cout << "tree2: "<< tree2 << endl;
     //
     // // size and getHeight
     cout << "tree size: " << tree.size() << endl; // 10
@@ -71,8 +73,13 @@ int main() {
     getResult = tree.get("Q"); // getResult has no value
     cout << "Q: " << getResult.has_value() << endl; // print 0
     cout << endl;
-    cout << tree.keys;
-//
+
+    vector<string> test = tree.keys();
+    for (size_t i = 0; i < test.size(); ++i) {
+        std::cout << test[i] << " ";
+    }
+    std::cout << std::endl;
+    //
 //    // findRange
 //    vector<int> rangeTest = tree.findRange("D", "W");
 //    // 70 68 82 75 77 86
