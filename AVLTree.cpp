@@ -223,20 +223,20 @@ bool AVLTree::containsHelper(AVLNode* node, const std::string& key) const {
 }
 
 optional<size_t> AVLTree::get(const std::string& key) const {
-    return containsHelper(root, key);
+    return getHelper(root, key);
 }
 
-bool AVLTree::getHelper(AVLNode* node, const std::string& key) const {
+optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const {
     if (!node) {
-        return false;
+        return nullopt;
     }
 
     if (key==node->key) {
-        return true;
+        return node->value;
     } else if (key < node->key) {
-        return containsHelper(node->left, key);
+        return getHelper(node->left, key);
     } else {
-        return containsHelper(node->right, key);
+        return getHelper(node->right, key);
     }
 }
 
