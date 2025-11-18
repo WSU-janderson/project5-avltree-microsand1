@@ -47,7 +47,8 @@ public:
     //done
     optional<size_t> get(const std::string& key) const;
 
-    vector<std::string> findRange( const std::string& lowKey,const std::string& highKey) const;
+    //
+    vector<size_t> findRange( const std::string& lowKey,const std::string& highKey) const;
 
     //done
     size_t& operator[](const std::string& key);
@@ -127,7 +128,7 @@ public:
     void keysHelper(AVLNode* node, std::vector<std::string>& out) const;
 
     //done
-    void findRangeHelper(AVLNode* node, const std::string& lowKey,const std::string& highKey, std::vector<std::string> &out) const;
+    void findRangeHelper(AVLNode* node, const std::string& lowKey,const std::string& highKey, std::vector<size_t> &out) const;
 
 };
 

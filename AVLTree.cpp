@@ -272,17 +272,17 @@ optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const
     }
 }
 
-vector<std::string> AVLTree::findRange(const std::string &lowKey, const std::string &highKey) const {
-    std::vector<std::string> result;
+vector<size_t> AVLTree::findRange(const std::string &lowKey, const std::string &highKey) const {
+    std::vector<size_t> result;
     findRangeHelper(root, lowKey, highKey,result);
     return result;
 }
 
-void AVLTree::findRangeHelper(AVLNode* node, const std::string &lowKey, const std::string &highKey, std::vector<std::string> &out) const {
+void AVLTree::findRangeHelper(AVLNode* node, const std::string &lowKey, const std::string &highKey, std::vector<size_t> &out) const {
     if (!node) return;
     findRangeHelper(node->left, lowKey, highKey, out);
-    if (node->key<=lowKey && node->key>=highKey) {
-        out.push_back(node->key);
+    if (node->key>=lowKey && node->key<=highKey) {
+        out.push_back(node->value);
     }
     findRangeHelper(node->right, lowKey, highKey, out);
 }
