@@ -106,6 +106,8 @@ int main() {
     removeResult = tree.remove("F"); // "F" has two children
     cout << endl << endl;
     cout << tree << endl;
+    containsResult = tree.contains("M"); // false
+    cout << containsResult << endl;
 //
     removeResult = tree.remove("V");
     removeResult = tree.remove("X");

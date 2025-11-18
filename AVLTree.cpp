@@ -1,9 +1,8 @@
 /*
 micah sanders-johnson
 november 15 2025
-HashTable
-Make a HashTable using random probe
-then write about the time complexity
+AVLTree
+Make an AVLTree
 */
 
 #include "AVLTree.h"
@@ -205,7 +204,7 @@ bool AVLTree::removeNode(AVLNode*& current){
         }
         std::string newKey = smallestInRight->key;
         int newValue = smallestInRight->value;
-        remove(root, smallestInRight->key); // delete this one
+        remove(current->right, smallestInRight->key); // delete this one
 
         current->key = newKey;
         current->value = newValue;
@@ -227,7 +226,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
 
     //balance cases left
     if (balance > 1) {
-        if (getNodeHeight(node->left->right) >= getNodeHeight(node->left->left)) {
+        if (getNodeHeight(node->left->right) > getNodeHeight(node->left->left)) {
             rotateLeft(node->left);
         }
         rotateRight(node);
@@ -235,7 +234,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
 
     //balance cases right
     if (balance < -1) {
-        if (getNodeHeight(node->right->left) >= getNodeHeight(node->right->right)) {
+        if (getNodeHeight(node->right->left) > getNodeHeight(node->right->right)) {
             rotateRight(node->right);
         }
         rotateLeft(node);
@@ -268,6 +267,7 @@ void AVLTree::rotateRight(AVLNode *&node) {
 }
 
 void AVLTree::updateHeight(AVLNode* node) {
+    if (!node) return;
     node->height = 1 + std::max(getNodeHeight(node->left),getNodeHeight(node->right));
 }
 
@@ -353,6 +353,8 @@ size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
     } else {
         return operatorHelper(node->right, key);
     }
+
+
 }
 
 void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
