@@ -10,6 +10,7 @@ Make an AVLTree
 #include <string>
 #include <iostream>
 
+//find the number of children
 size_t AVLTree::AVLNode::numChildren() const {
     size_t children = 0;
     if (right) {
@@ -21,14 +22,17 @@ size_t AVLTree::AVLNode::numChildren() const {
     return children;
 }
 
+//are there no children
 bool AVLTree::AVLNode::isLeaf() const {
     return numChildren() == 0;
 }
 
+//just return the variable
 int AVLTree::AVLNode::getHeight() const {
     return height;
 }
 
+//call a node and return that hieght
 int AVLTree::AVLNode::getHeightOf(AVLNode* node) const {
     if (node == nullptr) {
         return -1;
@@ -36,36 +40,44 @@ int AVLTree::AVLNode::getHeightOf(AVLNode* node) const {
     return node->height;
 }
 
+//get balance - for right + for left
 int AVLTree::AVLNode::getBalance() const {
     return getHeightOf(left) - getHeightOf(right);
 }
 
+//find the height 0 at minimum
 void AVLTree::AVLNode::updateHeight() {
     height = 1 + std::max(getHeightOf(left), getHeightOf(right));
 }
 
+//find if it is in tree
 bool AVLTree::contains(const std::string& key) const {
     return containsHelper(root, key);
 }
 
+//return the value of given key
 optional<size_t> AVLTree::get(const std::string& key) const {
     return getHelper(root, key);
 }
 
+//almost just get but you can change values
 size_t& AVLTree::operator[](const std::string& key) {
     return operatorHelper(root, key);
 }
 
+//return a vector of values of given keys
 vector<std::string> AVLTree::keys() const {
     std::vector<std::string> result;
     keysHelper(root, result);
     return result;
 }
 
+//size of tree
 size_t AVLTree::size() const {
     return sizeHelper(root);
 }
 
+//getHeight of root
 size_t AVLTree::getHeight() const {
     if (!root) {
         return 0;
@@ -73,10 +85,12 @@ size_t AVLTree::getHeight() const {
     return root->getHeight();
 }
 
+//duplicate a tree
 AVLTree::AVLTree(const AVLTree& other) {
     root = dupeHelper(other.root);
 }
 
+//replace tree and replace
 void AVLTree::operator=(const AVLTree& other) {
     if (this == &other) {
         return;
@@ -85,11 +99,13 @@ void AVLTree::operator=(const AVLTree& other) {
     root = dupeHelper(other.root);
 }
 
+//destroy the tree
 AVLTree::~AVLTree() {
     destroyTree(root);
     root = nullptr;
 }
 
+//delete each node
 void AVLTree::destroyTree(AVLNode* node) {
     if (!node) return;
 
@@ -99,6 +115,7 @@ void AVLTree::destroyTree(AVLNode* node) {
     delete node;
 }
 
+//result of the tree
 std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree) {
     os << "{ ";
     AVLTree::printInOrder(os, avlTree.root);
@@ -106,10 +123,12 @@ std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree) {
     return os;
 }
 
+//create a tree with a null root
 AVLTree::AVLTree() : root(nullptr) {
 
 }
 
+//insert a node into tree
 bool AVLTree::insert(const std::string& key, size_t value) {
     if (!root) {
         root = new AVLNode(key, value);
@@ -120,6 +139,7 @@ bool AVLTree::insert(const std::string& key, size_t value) {
     return insertHelper(root, key, value);
 }
 
+//remove a node from tree
 bool AVLTree::remove(const KeyType &key) {
     if (!root) {
         return false;
@@ -134,6 +154,7 @@ bool AVLTree::remove(const KeyType &key) {
     }
 }
 
+//the recursive call for insert
 bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t value) {
     if (!current) {
         current = new AVLNode(key, value);
@@ -156,6 +177,7 @@ bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t va
     return inserted;
 }
 
+//the recursive call for ostream
 void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
     if (!current) return;
     printInOrder(os, current->left);
@@ -163,11 +185,13 @@ void AVLTree::printInOrder(std::ostream& os, AVLNode * current) {
     printInOrder(os, current->right);
 }
 
+//recursive call for size
 size_t AVLTree::sizeHelper(AVLNode* node) const {
     if (!node) return 0;
     return 1 + sizeHelper(node->left) + sizeHelper(node->right);
 }
 
+//overload of remove, the recursive call for remove
 bool AVLTree::remove(AVLNode *&current, KeyType key) {
     if (!current) return false;
 
@@ -189,6 +213,7 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
     return removed;
 }
 
+//how a node is removed
 bool AVLTree::removeNode(AVLNode*& current) {
     if (!current) {
         return false;
@@ -235,6 +260,7 @@ bool AVLTree::removeNode(AVLNode*& current) {
     return true;
 }
 
+//check and balance the node given
 void AVLTree::balanceNode(AVLNode *&node) {
     if (!node) return;
 
@@ -264,6 +290,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
     node->updateHeight();
 }
 
+//rotate left
 void AVLTree::rotateLeft(AVLNode *&node) {
     AVLNode* rightChild = node->right;
     node->right = rightChild->left;
@@ -275,7 +302,7 @@ void AVLTree::rotateLeft(AVLNode *&node) {
     node = rightChild;
 }
 
-
+//rotate right
 void AVLTree::rotateRight(AVLNode *&node) {
     AVLNode* leftChild = node->left;
     node->left = leftChild->right;
@@ -287,6 +314,7 @@ void AVLTree::rotateRight(AVLNode *&node) {
     node = leftChild;
 }
 
+//just the height of the node again
 int AVLTree::getNodeHeight(AVLNode* node) const {
     if (node == nullptr) {
         return -1;
@@ -295,6 +323,7 @@ int AVLTree::getNodeHeight(AVLNode* node) const {
     }
 }
 
+//the recursive call for duplicating the tree
 AVLTree::AVLNode* AVLTree::dupeHelper(AVLNode* node) {
     if (!node) {
         return nullptr;
@@ -311,6 +340,7 @@ AVLTree::AVLNode* AVLTree::dupeHelper(AVLNode* node) {
 
 }
 
+//the recursive call for contains
 bool AVLTree::containsHelper(AVLNode* node, const std::string& key) const {
     if (!node) {
         return false;
@@ -325,6 +355,7 @@ bool AVLTree::containsHelper(AVLNode* node, const std::string& key) const {
     }
 }
 
+//the recursive call for get
 optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const {
     if (!node) {
         return nullopt;
@@ -339,12 +370,14 @@ optional<size_t> AVLTree::getHelper(AVLNode* node, const std::string& key) const
     }
 }
 
+//return all key values within the keys range
 vector<size_t> AVLTree::findRange(const std::string &lowKey, const std::string &highKey) const {
     std::vector<size_t> result;
     findRangeHelper(root, lowKey, highKey,result);
     return result;
 }
 
+//the recursive call for findrange
 void AVLTree::findRangeHelper(AVLNode* node, const std::string &lowKey, const std::string &highKey, std::vector<size_t> &out) const {
     if (!node) return;
     findRangeHelper(node->left, lowKey, highKey, out);
@@ -355,7 +388,7 @@ void AVLTree::findRangeHelper(AVLNode* node, const std::string &lowKey, const st
 }
 
 
-
+//the recursive call for operator
 size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
     if (!node) {
         node = new AVLNode(key, 0);
@@ -377,6 +410,7 @@ size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
     }
 }
 
+//the recursive call for keys
 void AVLTree::keysHelper(AVLNode *node, std::vector<std::string> &out) const {
     if (!node) return;
     keysHelper(node->left, out);
