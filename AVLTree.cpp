@@ -170,7 +170,7 @@ size_t AVLTree::sizeHelper(AVLNode* node) const {
 
 bool AVLTree::remove(AVLNode *&current, KeyType key) {
     if (!current) return false;
-    balanceNode(current);
+
     bool removed = false;
 
     if (key<current->key) {
@@ -181,15 +181,15 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
         removed = removeNode(current);
     }
 
-
+    if (current) {
         current->updateHeight();
         balanceNode(current);
-
+    }
 
     return removed;
 }
 
-bool AVLTree::removeNode(AVLNode*& current){
+bool AVLTree::removeNode(AVLNode*& current) {
     if (!current) {
         return false;
     }
@@ -229,7 +229,9 @@ bool AVLTree::removeNode(AVLNode*& current){
         return true; // we already deleted the one we needed to so return
     }
     delete toDelete;
-
+    if (root){
+    balanceNode(root);
+    }
     return true;
 }
 
@@ -284,6 +286,7 @@ void AVLTree::rotateRight(AVLNode *&node) {
 
     node = leftChild;
 }
+
 
 void AVLTree::updateHeight(AVLNode* node) {
     if (!node) return;
