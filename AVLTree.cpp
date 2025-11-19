@@ -199,19 +199,12 @@ bool AVLTree::removeNode(AVLNode*& current) {
     if (current->isLeaf()) {
         // case 1 we can delete the node
         current = nullptr;
-        if (root){
-            balanceNode(root);
-        }
     } else if (current->numChildren() == 1) {
         // case 2 - replace current with its only child
         if (current->right) {
             current = current->right;
         } else {
             current = current->left;
-
-        }
-        if (root){
-            balanceNode(root);
         }
     } else {
         // case 3 - we have two children,
@@ -236,7 +229,9 @@ bool AVLTree::removeNode(AVLNode*& current) {
         return true; // we already deleted the one we needed to so return
     }
     delete toDelete;
-
+    if (root){
+    balanceNode(root);
+    }
     return true;
 }
 
