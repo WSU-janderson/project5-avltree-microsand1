@@ -29,6 +29,17 @@ size_t AVLTree::AVLNode::getHeight() const {
     return height;
 }
 
+int AVLTree::AVLNode::getHeightOf(AVLNode* node) const {
+    if (node == nullptr) {
+        return -1;
+    }
+    return node->height;
+}
+
+int AVLTree::AVLNode::getBalance() const {
+    return getHeightOf(left) - getHeightOf(right);
+}
+
 bool AVLTree::contains(const std::string& key) const {
     return containsHelper(root, key);
 }
@@ -134,10 +145,8 @@ bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t va
         return false;
     }
 
-    if (inserted) {
         updateHeight(current);
         balanceNode(current);
-    }
 
     return inserted;
 }
@@ -156,7 +165,7 @@ size_t AVLTree::sizeHelper(AVLNode* node) const {
 
 bool AVLTree::remove(AVLNode *&current, KeyType key) {
     if (!current) return false;
-
+    balanceNode(current);
     bool removed = false;
 
     if (key<current->key) {
@@ -167,10 +176,10 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
         removed = removeNode(current);
     }
 
-    if (removed&&current) {
+
         updateHeight(current);
         balanceNode(current);
-    }
+
 
     return removed;
 }
@@ -209,7 +218,7 @@ bool AVLTree::removeNode(AVLNode*& current){
         current->key = newKey;
         current->value = newValue;
 
-        current->height = current->getHeight();
+        updateHeight(current);
         balanceNode(current);
 
         return true; // we already deleted the one we needed to so return
@@ -222,13 +231,18 @@ bool AVLTree::removeNode(AVLNode*& current){
 void AVLTree::balanceNode(AVLNode *&node) {
     if (!node) return;
 
+
+
     int balance = (int)getNodeHeight(node->left) - (int)getNodeHeight(node->right);
 
     //balance cases left
+
+
     if (balance > 1) {
         if (getNodeHeight(node->left->right) >= getNodeHeight(node->left->left)) {
             rotateLeft(node->left);
         }
+
         rotateRight(node);
     }
 
