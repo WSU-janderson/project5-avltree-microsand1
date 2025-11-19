@@ -287,12 +287,6 @@ void AVLTree::rotateRight(AVLNode *&node) {
     node = leftChild;
 }
 
-
-void AVLTree::updateHeight(AVLNode* node) {
-    if (!node) return;
-    node->height = 1 + std::max(getNodeHeight(node->left),getNodeHeight(node->right));
-}
-
 int AVLTree::getNodeHeight(AVLNode* node) const {
     if (node == nullptr) {
         return -1;
