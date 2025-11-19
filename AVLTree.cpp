@@ -25,7 +25,7 @@ bool AVLTree::AVLNode::isLeaf() const {
     return numChildren() == 0;
 }
 
-size_t AVLTree::AVLNode::getHeight() const {
+int AVLTree::AVLNode::getHeight() const {
     return height;
 }
 
@@ -38,6 +38,10 @@ int AVLTree::AVLNode::getHeightOf(AVLNode* node) const {
 
 int AVLTree::AVLNode::getBalance() const {
     return getHeightOf(left) - getHeightOf(right);
+}
+
+void AVLTree::AVLNode::updateHeight() {
+    height = 1 + std::max(getHeightOf(left), getHeightOf(right));
 }
 
 bool AVLTree::contains(const std::string& key) const {
@@ -105,6 +109,7 @@ std::ostream& operator<<(std::ostream& os, const AVLTree& avlTree) {
 AVLTree::AVLTree() : root(nullptr) {
 
 }
+
 bool AVLTree::insert(const std::string& key, size_t value) {
     if (!root) {
         root = new AVLNode(key, value);
@@ -145,7 +150,7 @@ bool AVLTree::insertHelper(AVLNode *& current, const std::string& key, size_t va
         return false;
     }
 
-        updateHeight(current);
+        current->updateHeight();
         balanceNode(current);
 
     return inserted;
@@ -177,7 +182,7 @@ bool AVLTree::remove(AVLNode *&current, KeyType key) {
     }
 
 
-        updateHeight(current);
+        current->updateHeight();
         balanceNode(current);
 
 
@@ -218,7 +223,7 @@ bool AVLTree::removeNode(AVLNode*& current){
         current->key = newKey;
         current->value = newValue;
 
-        updateHeight(current);
+        current->updateHeight();
         balanceNode(current);
 
         return true; // we already deleted the one we needed to so return
@@ -233,7 +238,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
 
 
 
-    int balance = (int)getNodeHeight(node->left) - (int)getNodeHeight(node->right);
+    int balance = node->getBalance();
 
     //balance cases left
 
@@ -254,7 +259,7 @@ void AVLTree::balanceNode(AVLNode *&node) {
         rotateLeft(node);
     }
 
-    updateHeight(node);
+    node->updateHeight();
 }
 
 void AVLTree::rotateLeft(AVLNode *&node) {
@@ -262,8 +267,8 @@ void AVLTree::rotateLeft(AVLNode *&node) {
     node->right = rightChild->left;
     rightChild->left = node;
 
-    updateHeight(node);
-    updateHeight(rightChild);
+    node->updateHeight();
+    rightChild->updateHeight();
 
     node = rightChild;
 }
@@ -274,8 +279,8 @@ void AVLTree::rotateRight(AVLNode *&node) {
     node->left = leftChild->right;
     leftChild->right = node;
 
-    updateHeight(node);
-    updateHeight(leftChild);
+    node->updateHeight();
+    leftChild->updateHeight();
 
     node = leftChild;
 }
@@ -364,12 +369,12 @@ size_t& AVLTree::operatorHelper(AVLNode*& node, const std::string& key) {
         return node->value;
     } else if (key < node->key) {
         size_t& val = operatorHelper(node->left, key);
-        updateHeight(node);
+        node->updateHeight();
         balanceNode(node);
         return val;
     } else {
         size_t& val = operatorHelper(node->right, key);
-        updateHeight(node);
+        node->updateHeight();
         balanceNode(node);
         return val;
     }

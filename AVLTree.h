@@ -22,7 +22,7 @@ protected:
     public:
         KeyType key;
         ValueType value;
-        size_t height;
+        int height;
 
         AVLNode* left;
         AVLNode* right;
@@ -34,13 +34,13 @@ protected:
         // true or false
         bool isLeaf() const;
         // number of hops to deepest leaf node
-        size_t getHeight() const;
+        int getHeight() const;
 
         int getBalance() const;
 
         int getHeightOf(AVLNode* node) const;
 
-
+        void updateHeight();
     };
 
 public:
